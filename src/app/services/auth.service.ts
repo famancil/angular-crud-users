@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import localeES from "@angular/common/locales/es";
 import { formatDate } from "@angular/common";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  apiUrl = environment.backendApiUrl;
 
   constructor(private http: HttpClient, private router:Router) { }
 
@@ -20,11 +23,11 @@ export class AuthService {
         params.append('grant_type','password');
         params.append('client_id','rest-client');
         let headers = 
-          new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+          new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded',
           'Authorization': 'Basic '+btoa("rest-client:rest-secret")});
         let options = { headers: headers};
          
-        return this.http.post('http://localhost:8080/oauth/token', 
+        return this.http.post(this.apiUrl+'oauth/token', 
           params.toString(), options)
           .pipe(map(res =>{
               if(res['access_token'] !== ''){

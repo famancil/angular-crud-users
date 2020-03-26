@@ -13,13 +13,16 @@ import { ListUsersComponent } from './users/list-users/list-users.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { UserService } from './services/user/user.service';
 
+import{ environment } from '../environments/environment.prod';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    ListUsersComponent
+    ListUsersComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { UserService } from './services/user/user.service';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true
-    }
+    },
+    {provide: 'BACKEND_API_URL', useValue: environment.backendApiUrl},
   ],
   bootstrap: [AppComponent]
 })
